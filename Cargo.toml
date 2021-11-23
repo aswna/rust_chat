@@ -1,0 +1,17 @@
+[package]
+name = "rust_chat"
+version = "0.1.0"
+authors = ["aswna <aswna@server.fake>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[[bin]]
+name = "server"
+path = "src/server/main.rs"
+
+[[bin]]
+name = "client"
+path = "src/client/main.rs"
