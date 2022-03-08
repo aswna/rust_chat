@@ -5,6 +5,8 @@ use std::process;
 use std::thread;
 use std::time;
 
+// TODO: eliminate unwrap()?
+
 fn main() {
     println!("I am the client.");
     let stream = TcpStream::connect("127.0.0.1:7878").unwrap();
