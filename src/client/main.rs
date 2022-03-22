@@ -6,6 +6,7 @@ use std::thread;
 use std::time;
 
 // TODO: eliminate unwrap()?
+// TODO: when server terminates client gets into infinite loop of printing "Incoming message: 'ACK'"
 
 fn main() {
     println!("I am the client.");

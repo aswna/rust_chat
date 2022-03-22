@@ -18,6 +18,7 @@ fn main() {
 
     let list_of_streams = Arc::new(RwLock::new(LinkedList::new()));
     for stream in listener.incoming() {
+        // println!("Connections [before] (list_of_streams): {:?}", list_of_streams);
         match stream {
             Ok(stream) => {
                 println!("Connection established!");
@@ -28,6 +29,8 @@ fn main() {
 
                 let list_of_streams_clone1 = list_of_streams.clone();
                 let list_of_streams_clone3 = list_of_streams.clone();
+                // println!("Connections [before] (list_of_streams_clone1): {:?}", list_of_streams_clone1);
+                // println!("Connections [before] (list_of_streams_clone3): {:?}", list_of_streams_clone3);
                 thread::spawn(move || {
                     register_connection(stream_clone1, list_of_streams_clone1);
                     handle_connection(stream_clone2/*, list_of_streams*/);
@@ -38,14 +41,16 @@ fn main() {
                 println!("Connection cannot be established! Exception: {}", e);
             }
         }
-        // TODO: list/print list_of_streams
+        // println!("Connections [after] (list_of_streams): {:?}", list_of_streams);
     }
     println!("Exit.");
 }
 
 fn register_connection(stream: TcpStream, list_of_streams: Arc<RwLock<LinkedList<TcpStream>>>) {
     println!("Registering connection: {:?}", stream);
+    println!("Connections [before register] (list_of_streams_clone): {:?}", list_of_streams);
     list_of_streams.write().unwrap().push_back(stream);
+    println!("Connections [after register] (list_of_streams_clone): {:?}", list_of_streams);
 }
 
 fn handle_connection(mut stream: TcpStream/*, list_of_streams: Arc<RwLock<LinkedList<TcpStream>>>*/) {
@@ -67,6 +72,8 @@ fn handle_connection(mut stream: TcpStream/*, list_of_streams: Arc<RwLock<Linked
 
 fn deregister_connection(stream: TcpStream, list_of_streams: Arc<RwLock<LinkedList<TcpStream>>>) {
     println!("Unregistering connection: {:?}", stream);
-    // TODO: !!!
+    println!("Connections [before deregister] (list_of_streams_clone): {:?}", list_of_streams);
+    // TODO: remove the actual stream or maybe all the streams without peers
     list_of_streams.write().unwrap().pop_front();
+    println!("Connections [after deregister] (list_of_streams_clone): {:?}", list_of_streams);
 }
